@@ -7,13 +7,77 @@
 	<title>Document</title>
 </head>
 <body>
+<form action="index.php" method="post" enctype="multipart/form-data">
 <label for="">Nama : </label>
 	<input type="text" name="nama" id=""><br>
 	<label for="">kelas</label>
 	<input type="text" name="kelas" id=""><br>
 	<label for="">Jurusan :</label>
 	<input type="text" name="jurusan" id="">
+	<button type="submit" name="kirim">Submit</button>
+	<button type="submit" name="load">Load Data</button>
+	</form>
 </body>
 </html>
 <?php 
+	$host ="riyanwar.database.windows.net";
+	$user = "riyanwar";
+	$pass = "Nurlaela0902";
+	$db = "myDB";
+
+	try{
+		$konek = new PDO("sqlsrv:server = $host; Database=$db",$user,$pass);
+		$konek->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+	}catch(Exception $e){
+		echo "Failed:",$e;
+	}
+
+	if(isset($_POST['kirim'])){
+		try {
+			$nama = $_POST['nama'];
+			$kelas = $_POST['kelas'];
+			$jurusan = $_POST['jurusan'];
+			$date = date("Y-m-d");
+
+			$sql = "INSERT INTO Mahasiswa(nama,kelas,jurusan,date) VALUES(?,?,?,?)";
+			$stmt->bindValue(1, $nama);
+			$stmt->bindValue(2, $kelas);
+			$stmt->bindValue(3, $jurusan);
+			$stmt->bindValue(4, $date);
+			
+		} catch (Exception $e) {
+			echo "Failed:",$e;
+		}
+		echo "<<br>Berhasil Terdaftar";
+	}else if (isset($_POST['load'])) {
+		try {
+			$ambil = "SELECT * FROM Mahasiswa";
+			$stmt = $konek->query($ambil);
+			$tampil = $stmt->fetchAll();
+			if (count($tampil)>0) {
+				echo "<table>";
+				echo "<tr>";
+				echo "<td>Nama</td>";
+				echo "<td>Kelas</td>";
+				echo "<td>Jurusan</td>";
+				echo "<td>Tanggal</td>";
+				echo "</tr>";
+				foreach ($tampil as $t) {
+					
+				echo "<tr>";
+				echo "<td>".$t['nama']."</td>";
+				echo "<td>".$t['kelas']."</td>";
+				echo "<td>".$t['jurusan']."</td>";
+				echo "<td>".$t['date']."</td>";
+				echo "</tr>";
+				}
+				echo "</table>";
+			}else {
+				echo "Data Unknown";
+			}
+		} catch (Exception $e) {
+			echo "Failed: ".$e;
+		}
+	}
+
 ?>
