@@ -33,10 +33,6 @@
 		print("Error connecting to SQL Server.");
 		die(print_r($e));
 	}
-	$connectionInfo = array("UID" => "riyanwar@riyanwar", "pwd" => "Nurlaela0902", "Database" => "myDB", "LoginTimeout" => 30, "Encrypt" => 1, "TrustServerCertificate" => 0);
-	$serverName = "tcp:riyanwar.database.windows.net,1433";
-	$conn = sqlsrv_connect($serverName, $connectionInfo);
-
 
 	if(isset($_POST['kirim'])){
 		try {
