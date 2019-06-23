@@ -25,12 +25,18 @@
 	$pass = "Nurlaela0902";
 	$db = "myDB";
 
-	try{
-		$konek = new PDO("sqlsrv:server = $host; Database=$db",$user,$pass);
-		$konek->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-	}catch(Exception $e){
-		echo "Failed:".$e;
+	try {
+		$conn = new PDO("sqlsrv:server = tcp:riyanwar.database.windows.net,1433; Database = myDB", "riyanwar", "Nurlaela0902");
+		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
+	catch (PDOException $e) {
+		print("Error connecting to SQL Server.");
+		die(print_r($e));
+	}
+	$connectionInfo = array("UID" => "riyanwar@riyanwar", "pwd" => "Nurlaela0902", "Database" => "myDB", "LoginTimeout" => 30, "Encrypt" => 1, "TrustServerCertificate" => 0);
+	$serverName = "tcp:riyanwar.database.windows.net,1433";
+	$conn = sqlsrv_connect($serverName, $connectionInfo);
+
 
 	if(isset($_POST['kirim'])){
 		try {
@@ -40,6 +46,7 @@
 			$date = date("Y-m-d");
 
 			$sql = "INSERT INTO Mahasiswa(nama,kelas,jurusan,date) VALUES(?,?,?,?)";
+			$stmt = $conn->prepare($sql);
 			$stmt->bindValue(1, $nama);
 			$stmt->bindValue(2, $kelas);
 			$stmt->bindValue(3, $jurusan);
@@ -52,7 +59,7 @@
 	}else if (isset($_POST['load'])) {
 		try {
 			$ambil = "SELECT * FROM Mahasiswa";
-			$stmt = $konek->query($ambil);
+			$stmt = $conn->query($ambil);
 			$tampil = $stmt->fetchAll();
 			if (count($tampil)>0) {
 				echo "<table>";
