@@ -29,7 +29,7 @@
 		$konek = new PDO("sqlsrv:server = $host; Database=$db",$user,$pass);
 		$konek->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 	}catch(Exception $e){
-		echo "Failed:",$e;
+		echo "Failed:".$e;
 	}
 
 	if(isset($_POST['kirim'])){
