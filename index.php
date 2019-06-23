@@ -26,7 +26,7 @@
 	$db = "myDB";
 
 	try {
-		$conn = new PDO("sqlsrv:server = tcp:riyanwar.database.windows.net,1433; Database = myDB", "riyanwar", "Nurlaela0902");
+		$conn = new PDO("sqlsrv:server = tcp:riyanwar.database.windows.net,1433; Database = myDB", "riyanwar", "{Nurlaela0902}");
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	catch (PDOException $e) {
